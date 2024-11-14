@@ -1,38 +1,118 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Invitation E-Card</title>
   <link href="https://fonts.googleapis.com/css?family=Baloo" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-<link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel="stylesheet" href="./style.css">
+  <style>
+    /* Inline CSS for confetti with mixed shapes */
+    .confetti {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      background-color: red;
+      border-radius: 50%;
+      animation: fall 3s linear infinite;
+      z-index: 2;
+      opacity: 0.9;
+    }
 
+    .confetti.square {
+      border-radius: 0;
+    }
+
+    .confetti.triangle {
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 12px solid red;
+      background-color: transparent;
+    }
+
+    .confetti.star {
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      background-color: yellow;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
 <body>
-<!-- partial:index.partial.html -->
-<div class="invitation">
-  <div class="envelope">
-    <div class="mask">
-      <div class="card">
-        <div class="face front">
-          <h1><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/39132/poke-logo.svg"/><span class="extrude">Invitation Card</span></h1>
+  <div class="invitation">
+    <div class="envelope">
+      <div class="mask">
+        <div class="card">
+          <div class="face front">
+            <h1><img src="./invite.png" style="width:90%;;"/><span class="extrude"></span></h1>
+          </div>
+          <div class="face back" style="height: 100%;"><img src=""></div>
         </div>
-        <div class="face back"><img src="/invitation-e-card/src/download.jfif"></div>
       </div>
     </div>
-  </div>
-  
-  <div class="flap">
     
+    <div class="flap"></div>
+    
+    <!-- Logo Image -->
+    <div class="image1" id="logoImage">
+      <img src="./logo.jpg" alt="" style="width: 50px;">
+    </div>
+    
+    <!-- Button to open invite and trigger confetti -->
+    <button id="hideButton">Open the Invite</button>
   </div>
-  <div class = image1><img src="./429px-Mu_sigma_logo.jpg" alt="" style="width: 50px;"></div>
-  <button>Open</button>
-</div>
 
-<!-- partial -->
+  <!-- JavaScript to hide the logo image and start confetti animation -->
+  <script>
+    document.getElementById("hideButton").addEventListener("click", function() {
+      // Hide the logo image
+      document.getElementById("logoImage").style.display = "none";
+      
+      // Trigger confetti effect
+      for (let i = 0; i < 150; i++) {
+        createConfetti();
+      }
+    });
+
+    // Function to create and animate confetti
+    function createConfetti() {
+      const confetti = document.createElement("div");
+      confetti.classList.add("confetti");
+
+      // Randomize confetti shape
+      const shapes = ["square", "circle", "triangle", "star"];
+      const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
+      if (randomShape !== "circle") confetti.classList.add(randomShape);
+
+      // Randomize confetti position, color, and animation speed
+      confetti.style.left = Math.random() * 100 + "vw";
+      confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 80%, 60%)`;
+      confetti.style.animationDuration = 2 + Math.random() * 3 + "s";
+
+      // Add confetti to the document body
+      document.body.appendChild(confetti);
+
+      // Remove confetti after animation
+      setTimeout(() => {
+        confetti.remove();
+      }, 3000);
+    }
+  </script>
+
   <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js'></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/35984/ScrubGSAPTimeline.js'></script><script  src="./script.js"></script>
-
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js'></script>
+  <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/35984/ScrubGSAPTimeline.js'></script>
+  <script src="./script.js"></script>
 </body>
 </html>
